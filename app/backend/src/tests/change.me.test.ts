@@ -14,7 +14,18 @@ const { app } = new App();
 
 const { expect } = chai;
 
-describe('Seu teste', () => {
+describe('Teste da rota...', () => {
+  describe('POST /login', () => {
+    it('Retorna um token', async () => {
+      const response = await chai.request(app).post('/login').send({
+        email: 'joel@uol.com.br',
+        password: 'batata123',
+      });
+
+      expect(response.status).to.be.equal(201);
+      expect(response.body).to.haveOwnProperty('token');
+    })
+  })
   /**
    * Exemplo do uso de stubs com tipos
    */
