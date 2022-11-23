@@ -9,7 +9,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      homeTeam: {       
+      home_team: {       
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
@@ -18,11 +18,11 @@ module.exports = {
         },
         field: 'home_team',
       },
-      homeTeamGoals: {       
+      home_team_goals: {       
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      awayTeam: {       
+      away_team: {       
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
@@ -31,11 +31,11 @@ module.exports = {
         },
         field: 'away_team',
       },
-      awayTeamGoals: {       
+      away_team_goals: {       
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      inProgress: {       
+      in_progress: {       
         type: Sequelize.BOOLEAN,
         allowNull: false,
       },
