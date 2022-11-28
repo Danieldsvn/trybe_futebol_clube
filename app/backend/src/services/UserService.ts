@@ -4,32 +4,48 @@ import UserModel from '../database/models/UsersModel';
 
 const secret = 'jwt_secret';
 
+interface Login {
+  message?: string;
+  status: number;
+  token?: string;
+}
+
 export default class UserService {
-  static async login(email: string, password: string) {
+  static async login(email: string, password: string): Promise<Login> {
+    const bodyValiddation = this.bodyValidation(email, password);
+    if (bodyValiddation) {
+      return bodyValiddation;
+    }
+
     const response = await UserModel.findOne({ where: { email } });
 
     if (!response) {
-      throw new Error('usuario não encontrado');
+      return { status: 404, message: 'Usuário não encontrado' };
     }
 
-    if (password.length < 7) {
-      console.log('Senha com menos de 7 caracteres');
-      throw new Error('Senha tem menos de 7 caracteres');
+    const passwordValidation = this.passwordValidation(password, response.password);
+    if (passwordValidation) {
+      return passwordValidation;
     }
-
-    if (!(this.passwordValidation(password, response.password))) {
-      console.log('Senha errada');
-      throw new Error('Senha errada');
-    }
-
     const jwtConfig: SignOptions = { expiresIn: '8h', algorithm: 'HS256' };
     const token = sign({ data: { email } }, secret, jwtConfig);
 
-    return { token };
+    return { status: 200, token };
   }
 
-  static passwordValidation(bodyPassword: string, dbPassword: string): boolean {
+  static passwordValidation(bodyPassword: string, dbPassword: string) {
     const validPassword = compareSync(bodyPassword, dbPassword);
-    return validPassword;
+    if (!validPassword) {
+      return { status: 400, message: 'Senha incorreta' };
+    }
+  }
+
+  static bodyValidation(email: string, password: string) {
+    if (!email || email.length === 0) {
+      return { status: 400, message: 'All filds must be filled' };
+    }
+    if (password.length < 7) {
+      return { status: 400, message: 'Senha com menos que 7 caracteres' };
+    }
   }
 }
