@@ -42,7 +42,7 @@ export default class UserService {
 
   static bodyValidation(email: string, password: string) {
     if (!email || email.length === 0) {
-      return { status: 400, message: 'All filds must be filled' };
+      return { status: 400, message: 'All fields must be filled' };
     }
     if (password.length < 7) {
       return { status: 400, message: 'Senha com menos que 7 caracteres' };
