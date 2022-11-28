@@ -46,6 +46,15 @@ const noEmailUser2 = {
   password: 'secret_admin'
 }
 
+const noPasswordUser1 = {
+  email: 'admin@admin.com',  
+}
+
+const noPasswordUser2 = {
+  email: 'admin@admin.com',
+  password: ''  
+}
+
 describe('Teste da rota...', () => {
   describe('POST /login', () => {
     // beforeEach(async () => {
@@ -75,6 +84,21 @@ describe('Teste da rota...', () => {
       expect(response1.body.message).to.equal('All fields must be filled');
 
       const response2 = await chai.request(app).post('/login').send(noEmailUser2);
+
+      expect(response2.status).to.be.equal(400);
+      expect(response2.body).to.haveOwnProperty('message');
+      expect(response2.body.message).to.equal('All fields must be filled');
+
+    })
+
+    it('Login sem senha retorna status 400 e com mensagem "All fields must be filled', async () => {
+      const response1 = await chai.request(app).post('/login').send(noPasswordUser1);
+
+      expect(response1.status).to.be.equal(400);
+      expect(response1.body).to.haveOwnProperty('message');
+      expect(response1.body.message).to.equal('All fields must be filled');
+
+      const response2 = await chai.request(app).post('/login').send(noPasswordUser2);
 
       expect(response2.status).to.be.equal(400);
       expect(response2.body).to.haveOwnProperty('message');

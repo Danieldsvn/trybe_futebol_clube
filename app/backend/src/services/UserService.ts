@@ -44,7 +44,10 @@ export default class UserService {
     if (!email || email.length === 0) {
       return { status: 400, message: 'All fields must be filled' };
     }
-    if (password.length < 7) {
+    if (!password || password.length === 0) {
+      return { status: 400, message: 'All fields must be filled' };
+    }
+    if (password.length < 7 && password.length > 0) {
       return { status: 400, message: 'Senha com menos que 7 caracteres' };
     }
   }
