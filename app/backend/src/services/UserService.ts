@@ -20,7 +20,7 @@ export default class UserService {
     const response = await UserModel.findOne({ where: { email } });
 
     if (!response) {
-      return { status: 404, message: 'Usuário não encontrado' };
+      return { status: 401, message: 'Incorrect email or password' };
     }
 
     const passwordValidation = this.passwordValidation(password, response.password);

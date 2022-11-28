@@ -29,7 +29,7 @@ const user = {
   password: 'secret_admin'
 }
 
-const dbUser: UserMock = {
+const dbUser = {
   id:  1,
   username: 'Admin',
   email: 'admin@admin.com',
@@ -55,6 +55,11 @@ const noPasswordUser2 = {
   password: ''  
 }
 
+const invalidEmailUser = {
+  email: 'admin@admin.co',
+  password: 'secret_admin'
+}
+
 describe('Teste da rota...', () => {
   describe('POST /login', () => {
     // beforeEach(async () => {
@@ -69,14 +74,15 @@ describe('Teste da rota...', () => {
     //   (Users.findOne as sinon.SinonStub).restore();
     // })    
     it('Usuário correto retorna um token', async () => {
-      sinon.stub(Users, "findOne").resolves(dbUser as any);
+      sinon.stub(Users, "findOne").resolves(dbUser as Users);
       const response = await chai.request(app).post('/login').send(user);
 
       expect(response.status).to.be.equal(200);
       expect(response.body).to.haveOwnProperty('token');
+      (Users.findOne as sinon.SinonStub).restore();
     })
 
-    it('Login sem email retorna status 400 e com mensagem "All fields must be filled', async () => {
+    it('Login sem email retorna status 400 e com mensagem "All fields must be filled"', async () => {
       const response1 = await chai.request(app).post('/login').send(noEmailUser1);
 
       expect(response1.status).to.be.equal(400);
@@ -91,7 +97,7 @@ describe('Teste da rota...', () => {
 
     })
 
-    it('Login sem senha retorna status 400 e com mensagem "All fields must be filled', async () => {
+    it('Login sem senha retorna status 400 e com mensagem "All fields must be filled"', async () => {
       const response1 = await chai.request(app).post('/login').send(noPasswordUser1);
 
       expect(response1.status).to.be.equal(400);
@@ -104,6 +110,16 @@ describe('Teste da rota...', () => {
       expect(response2.body).to.haveOwnProperty('message');
       expect(response2.body.message).to.equal('All fields must be filled');
 
+    })
+
+    it('Login com email inválido retorna status 401 e mensagen "Incorrect email or password"', async () => {
+      sinon.stub(Users, "findOne").resolves();
+      const response = await chai.request(app).post('/login').send(invalidEmailUser);
+
+      expect(response.status).to.be.equal(401);
+      expect(response.body).to.haveOwnProperty('message');
+      expect(response.body.message).to.equal('Incorrect email or password');
+      (Users.findOne as sinon.SinonStub).restore();
     })
   })
   /**
