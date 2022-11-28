@@ -1,6 +1,8 @@
 import { compareSync } from 'bcryptjs';
-
+import { sign, SignOptions } from 'jsonwebtoken';
 import UserModel from '../database/models/UsersModel';
+
+const secret = 'jwt_secret';
 
 export default class UserService {
   static async login(email: string, password: string) {
@@ -20,7 +22,10 @@ export default class UserService {
       throw new Error('Senha errada');
     }
 
-    return { token: 'token' };
+    const jwtConfig: SignOptions = { expiresIn: '8h', algorithm: 'HS256' };
+    const token = sign({ data: { email } }, secret, jwtConfig);
+
+    return { token };
   }
 
   static passwordValidation(bodyPassword: string, dbPassword: string): boolean {

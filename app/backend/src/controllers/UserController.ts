@@ -7,7 +7,7 @@ export default class UserController {
       const { email, password } = req.body;
 
       const response = await UserService.login(email, password);
-      if (response.token) return res.status(200).json(response.token);
+      if (response.token) return res.status(200).json(response);
     } catch (err) {
       return res.status(500).json({ message: 'erro' });
     }
