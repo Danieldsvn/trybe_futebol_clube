@@ -8,6 +8,8 @@ import Users from '../database/models/UsersModel';
 
 import { Response } from 'superagent';
 
+import { user, dbUser, noEmailUser1, noEmailUser2, noPasswordUser1, noPasswordUser2, invalidEmailUser } from './dataMock'
+
 
 chai.use(chaiHttp);
 
@@ -16,49 +18,6 @@ const { app } = new App();
 const { expect } = chai;
 
 
-interface UserMock {
-  id: number,
-  username: string,
-  role: string,
-  email: string,
-  password: string
-}
-
-const user = {
-  email: 'admin@admin.com',
-  password: 'secret_admin'
-}
-
-const dbUser = {
-  id:  1,
-  username: 'Admin',
-  email: 'admin@admin.com',
-  password: '$2a$08$xi.Hxk1czAO0nZR..B393u10aED0RQ1N3PAEXQ7HxtLjKPEZBu.PW',
-  role: 'admin' 
-}
-
-const noEmailUser1 = {
-  password: 'secret_admin'
-}
-
-const noEmailUser2 = {
-  email: '',
-  password: 'secret_admin'
-}
-
-const noPasswordUser1 = {
-  email: 'admin@admin.com',  
-}
-
-const noPasswordUser2 = {
-  email: 'admin@admin.com',
-  password: ''  
-}
-
-const invalidEmailUser = {
-  email: 'admin@admin.co',
-  password: 'secret_admin'
-}
 
 describe('Teste da rota...', () => {
   describe('POST /login', () => {
