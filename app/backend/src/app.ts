@@ -1,6 +1,7 @@
 import * as express from 'express';
 import UserController from './controllers/UserController';
 import TeamController from './controllers/TeamController';
+import MatchController from './controllers/MatchController';
 
 class App {
   public app: express.Express;
@@ -17,6 +18,7 @@ class App {
     this.app.get('/login/validate', (req, res) => UserController.loginValidation(req, res));
     this.app.get('/teams', (req, res) => TeamController.getAll(req, res));
     this.app.get('/teams/:id', (req, res) => TeamController.getById(req, res));
+    this.app.get('/matches', (req, res) => MatchController.getAll(req, res));
   }
 
   private config():void {

@@ -120,8 +120,8 @@ describe('Teste da rota...', () => {
     it('Retorna time especificado pelo "id"', async () => {
       const number5 = 5;
       sinon.stub(Teams, "findOne").resolves(id5Team as Teams);
-      const response = await chai.request(app).get(`/teams/:id`).query({ id: number5}); // tem que ver se funciona      
-    
+      const response = await chai.request(app).get(`/teams/:id`); // tem que ver se funciona      
+      console.log(response);
       expect(id5Team.id).to.be.equal(response);
       expect(response.status).to.be.equal(200);
       expect(response.body).to.be.deep.equal(id5Team);
