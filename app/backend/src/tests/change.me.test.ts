@@ -5,13 +5,16 @@ import chaiHttp = require('chai-http');
 
 import App from '../app';
 import Users from '../database/models/UsersModel';
+import Teams from '../database/models/TeamsModel';
 
 import { compareSync } from 'bcryptjs';
 
 import { Response } from 'superagent';
 
 import { user, dbUser, noEmailUser1, noEmailUser2, noPasswordUser1,
-   noPasswordUser2, invalidEmailUser, smallPasswordUser, invalidPasswordUser } from './dataMock'
+   noPasswordUser2, invalidEmailUser, smallPasswordUser, invalidPasswordUser } from './usersMock'
+
+import { allTeams, id5Team } from './teamsMock';
 
 
 chai.use(chaiHttp);
@@ -101,6 +104,28 @@ describe('Teste da rota...', () => {
       expect(response2.body.message).to.equal('Incorrect email or password');
       (Users.findOne as sinon.SinonStub).restore();
       // (brcrypt.compareSync as sinon.SinonStub).restore();
+    })
+  })
+  describe('testes da rota /teams', () => {
+    it('Retorna todos os times corretamente', async () => {
+      sinon.stub(Teams, "findAll").resolves(allTeams as Teams[]);
+      const response = await chai.request(app).get('/teams');
+      
+      expect(response.status).to.be.equal(200);
+      expect(response.body).to.be.deep.equal(allTeams);
+      (Teams.findAll as sinon.SinonStub).restore();
+    })
+  })
+  describe('[A confirmar]testes da rota /teams/:id', () => {
+    it('Retorna time especificado pelo "id"', async () => {
+      const number5 = 5;
+      sinon.stub(Teams, "findOne").resolves(id5Team as Teams);
+      const response = await chai.request(app).get(`/teams/:id`).query({ id: number5}); // tem que ver se funciona      
+    
+      expect(id5Team.id).to.be.equal(response);
+      expect(response.status).to.be.equal(200);
+      expect(response.body).to.be.deep.equal(id5Team);
+      (Teams.findOne as sinon.SinonStub).restore();
     })
   })
   /**
