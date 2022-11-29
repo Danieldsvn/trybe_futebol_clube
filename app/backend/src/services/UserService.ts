@@ -1,13 +1,14 @@
 import { compareSync } from 'bcryptjs';
-import { sign, SignOptions } from 'jsonwebtoken';
+import { JwtPayload, sign, SignOptions } from 'jsonwebtoken';
 import UserModel from '../database/models/UsersModel';
 
-const secret = 'jwt_secret';
+export const secret = 'jwt_secret';
 
-interface Login {
+export interface Login {
   message?: string;
   status: number;
   token?: string;
+  role?: string;
 }
 
 const INCORRECT_EMAIL_OR_PASSWORD = 'Incorrect email or password';
@@ -30,9 +31,19 @@ export default class UserService {
       return passwordValidation;
     }
     const jwtConfig: SignOptions = { expiresIn: '8h', algorithm: 'HS256' };
-    const token = sign({ data: { email } }, secret, jwtConfig);
+    const token = sign({ data: email }, secret, jwtConfig);
 
     return { status: 200, token };
+  }
+
+  static async loginValidation(email: string | JwtPayload): Promise<Login> {
+    const response = await UserModel.findOne({ where: { email } });
+
+    if (!response) {
+      return { status: 401, message: INCORRECT_EMAIL_OR_PASSWORD };
+    }
+
+    return { status: 200, role: response.role };
   }
 
   static passwordValidation(bodyPassword: string, dbPassword: string) {

@@ -13,6 +13,7 @@ class App {
     this.app.get('/', (req, res) => res.json({ ok: true }));
 
     this.app.post('/login', (req, res) => UserController.login(req, res));
+    this.app.get('/login/validate', (req, res) => UserController.loginValidation(req, res));
   }
 
   private config():void {

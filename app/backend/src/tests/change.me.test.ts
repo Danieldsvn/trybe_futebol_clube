@@ -83,7 +83,7 @@ describe('Teste da rota...', () => {
       expect(response.body.message).to.equal('Incorrect email or password');
       (Users.findOne as sinon.SinonStub).restore();
     })
-    it('Login com password inválido retorna status 401 e mensagen "Incorrect email or password"', async () => {
+    it('[TESTE INEFICAZ]Login com password inválido retorna status 401 e mensagen "Incorrect email or password"', async () => {
       sinon.stub(Users, "findOne").resolves();
       const response1 = await chai.request(app).post('/login').send(smallPasswordUser);
 

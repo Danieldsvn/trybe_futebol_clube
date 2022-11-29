@@ -1,5 +1,9 @@
 import { Request, Response } from 'express';
-import UserService from '../services/UserService';
+import { verify } from 'jsonwebtoken';
+
+import UserService, { secret } from '../services/UserService';
+
+type Token = string;
 
 export default class UserController {
   static async login(req: Request, res: Response) {
@@ -10,6 +14,24 @@ export default class UserController {
       const { status, message, token } = response;
       if (token) {
         return res.status(status).json({ token });
+      }
+      return res.status(status).json({ message });
+    } catch (err) {
+      return res.status(500).json({ message: 'erro' });
+    }
+  }
+
+  static async loginValidation(req: Request, res: Response) {
+    try {
+      const tokenUser = req.headers.authorization;
+
+      const decoded = verify(tokenUser as Token, secret);
+      console.log(decoded);
+
+      const response = await UserService.loginValidation('Tem que tipar corretamente');
+      const { status, message, role } = response;
+      if (role) {
+        return res.status(status).json({ role });
       }
       return res.status(status).json({ message });
     } catch (err) {
