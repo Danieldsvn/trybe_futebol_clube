@@ -11,7 +11,6 @@ export default class MatchController {
 
       return res.status(status).json(payload);
     } catch (err) {
-      console.error(err);
       return res.status(500).json({ message: 'erro' });
     }
   }
