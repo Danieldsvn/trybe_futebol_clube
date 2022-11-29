@@ -6,9 +6,12 @@ import chaiHttp = require('chai-http');
 import App from '../app';
 import Users from '../database/models/UsersModel';
 
+import { compareSync } from 'bcryptjs';
+
 import { Response } from 'superagent';
 
-import { user, dbUser, noEmailUser1, noEmailUser2, noPasswordUser1, noPasswordUser2, invalidEmailUser } from './dataMock'
+import { user, dbUser, noEmailUser1, noEmailUser2, noPasswordUser1,
+   noPasswordUser2, invalidEmailUser, smallPasswordUser, invalidPasswordUser } from './dataMock'
 
 
 chai.use(chaiHttp);
@@ -79,6 +82,25 @@ describe('Teste da rota...', () => {
       expect(response.body).to.haveOwnProperty('message');
       expect(response.body.message).to.equal('Incorrect email or password');
       (Users.findOne as sinon.SinonStub).restore();
+    })
+    it('Login com password inválido retorna status 401 e mensagen "Incorrect email or password"', async () => {
+      sinon.stub(Users, "findOne").resolves();
+      const response1 = await chai.request(app).post('/login').send(smallPasswordUser);
+
+      expect(response1.status).to.be.equal(401);
+      expect(response1.body).to.haveOwnProperty('message');
+      expect(response1.body.message).to.equal('Incorrect email or password');
+      (Users.findOne as sinon.SinonStub).restore();
+
+      sinon.stub(Users, "findOne").resolves(dbUser as Users);
+      sinon.stub({compareSync}).compareSync.resolves(false); // Aprendendo a utilizar...      
+      const response2 = await chai.request(app).post('/login').send(invalidPasswordUser);
+
+      expect(response1.status).to.be.equal(401);
+      expect(response2.body).to.haveOwnProperty('message');
+      expect(response2.body.message).to.equal('Incorrect email or password');
+      (Users.findOne as sinon.SinonStub).restore();
+      // (brcrypt.compareSync as sinon.SinonStub).restore();
     })
   })
   /**

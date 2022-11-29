@@ -10,6 +10,8 @@ interface Login {
   token?: string;
 }
 
+const INCORRECT_EMAIL_OR_PASSWORD = 'Incorrect email or password';
+
 export default class UserService {
   static async login(email: string, password: string): Promise<Login> {
     const bodyValiddation = this.bodyValidation(email, password);
@@ -20,7 +22,7 @@ export default class UserService {
     const response = await UserModel.findOne({ where: { email } });
 
     if (!response) {
-      return { status: 401, message: 'Incorrect email or password' };
+      return { status: 401, message: INCORRECT_EMAIL_OR_PASSWORD };
     }
 
     const passwordValidation = this.passwordValidation(password, response.password);
@@ -36,7 +38,7 @@ export default class UserService {
   static passwordValidation(bodyPassword: string, dbPassword: string) {
     const validPassword = compareSync(bodyPassword, dbPassword);
     if (!validPassword) {
-      return { status: 400, message: 'Senha incorreta' };
+      return { status: 401, message: INCORRECT_EMAIL_OR_PASSWORD };
     }
   }
 
@@ -48,7 +50,7 @@ export default class UserService {
       return { status: 400, message: 'All fields must be filled' };
     }
     if (password.length < 7 && password.length > 0) {
-      return { status: 400, message: 'Senha com menos que 7 caracteres' };
+      return { status: 401, message: INCORRECT_EMAIL_OR_PASSWORD };
     }
   }
 }

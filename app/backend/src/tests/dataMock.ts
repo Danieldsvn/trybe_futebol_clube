@@ -33,3 +33,13 @@ export const invalidEmailUser = {
   email: 'admin@admin.co',
   password: 'secret_admin'
 }
+
+export const smallPasswordUser = {
+  email: 'admin@admin.co',
+  password: 'secret'
+}
+
+export const invalidPasswordUser = {
+  email: 'admin@admin.com',
+  password: 'wrong_password'
+}
