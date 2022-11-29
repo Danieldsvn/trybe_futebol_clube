@@ -1,5 +1,5 @@
 import { compareSync } from 'bcryptjs';
-import { JwtPayload, sign, SignOptions } from 'jsonwebtoken';
+import { sign, SignOptions } from 'jsonwebtoken';
 import UserModel from '../database/models/UsersModel';
 
 export const secret = 'jwt_secret';
@@ -36,7 +36,7 @@ export default class UserService {
     return { status: 200, token };
   }
 
-  static async loginValidation(email: string | JwtPayload): Promise<Login> {
+  static async loginValidation(email: string): Promise<Login> {
     const response = await UserModel.findOne({ where: { email } });
 
     if (!response) {

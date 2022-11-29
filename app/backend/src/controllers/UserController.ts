@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { verify } from 'jsonwebtoken';
+import { JwtPayload, verify } from 'jsonwebtoken';
 
 import UserService, { secret } from '../services/UserService';
 
@@ -25,10 +25,9 @@ export default class UserController {
     try {
       const tokenUser = req.headers.authorization;
 
-      const decoded = verify(tokenUser as Token, secret);
-      console.log(decoded);
+      const decoded = verify(tokenUser as Token, secret) as JwtPayload;
 
-      const response = await UserService.loginValidation('Tem que tipar corretamente');
+      const response = await UserService.loginValidation(decoded.data);
       const { status, message, role } = response;
       if (role) {
         return res.status(status).json({ role });
