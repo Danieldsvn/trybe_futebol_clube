@@ -5,10 +5,11 @@ export default class MatchService {
   static async getAll() {
     const response = await MatchModel.findAll({
       include: [{
-        model: TeamModel, as: 'teamHome',
+        model: TeamModel,
       }, {
-        model: TeamModel, as: 'teamAway',
-      }],
+        model: TeamModel,
+      },
+      ],
     });
 
     return { status: 200, payload: response };

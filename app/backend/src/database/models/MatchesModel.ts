@@ -61,9 +61,10 @@ Matches.init({
   * Associations 1:N devem ficar em uma das instâncias de modelo
   * */
 
-Teams.hasMany(Matches, { foreignKey: 'homeTeam', as: 'teamHome' });
-Teams.hasMany(Matches, { foreignKey: 'awayTeam', as: 'teamAway' });
-Matches.belongsTo(Teams);
+Matches.belongsTo(Teams, { as: 'teams', foreignKey: 'home_team' });
+Matches.belongsTo(Teams, { foreignKey: 'away_team' });
+Teams.hasMany(Matches, { as: 'matches', foreignKey: 'home_team' });
+Teams.hasMany(Matches, { foreignKey: 'away_team' });
 // OtherModel.belongsTo(Example, { foreignKey: 'campoB', as: 'campoEstrangeiroB' });
 
 // Example.hasMany(OtherModel, { foreignKey: 'campoC', as: 'campoEstrangeiroC' });
