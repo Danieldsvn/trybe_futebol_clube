@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import MatchValidations from '../validations/MatchValidations';
+import Validations from '../validations/Validations';
 
 import createMatch from '../interfaces/CreateMatchInterface';
 import MatchService from '../services/MatchService';
@@ -28,7 +28,12 @@ export default class MatchController {
     try {
       const { homeTeam, awayTeam, homeTeamGoals, awayTeamGoals } = req.body;
 
-      MatchValidations.equalTeams(res, homeTeam, awayTeam);
+      const equalTeams = Validations.equalTeams(homeTeam, awayTeam);
+      if (equalTeams) return res.status(equalTeams.status).json({ message: equalTeams.message });
+      const home = await Validations.existTeam(homeTeam);
+      if (home) return res.status(home.status).json({ message: home.message });
+      const away = await Validations.existTeam(awayTeam);
+      if (away) return res.status(away.status).json({ message: away.message });
 
       const newMatch: createMatch = { homeTeam, awayTeam, homeTeamGoals, awayTeamGoals };
 
