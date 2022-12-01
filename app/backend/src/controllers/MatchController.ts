@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import MatchValidations from '../validations/MatchValidations';
 
 import createMatch from '../interfaces/CreateMatchInterface';
 import MatchService from '../services/MatchService';
@@ -27,10 +28,7 @@ export default class MatchController {
     try {
       const { homeTeam, awayTeam, homeTeamGoals, awayTeamGoals } = req.body;
 
-      if (homeTeam === awayTeam) {
-        return res.status(422)
-          .json({ message: 'It is not possible to create a match with two equal teams' });
-      }
+      MatchValidations.equalTeams(res, homeTeam, awayTeam);
 
       const newMatch: createMatch = { homeTeam, awayTeam, homeTeamGoals, awayTeamGoals };
 

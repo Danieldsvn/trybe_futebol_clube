@@ -35,9 +35,7 @@ export default class MatchService {
 
   static async create(newMatch: createMatch) {
     const { homeTeam, awayTeam, homeTeamGoals, awayTeamGoals } = newMatch;
-    // if (homeTeam === awayTeam) {
-    //   return { status: 422, message: 'It is not possible to create a match with two equal teams' };
-    // }
+
     const response = await MatchModel.create({ homeTeam, awayTeam, homeTeamGoals, awayTeamGoals });
 
     return { status: 201, payload: response };
