@@ -1,5 +1,6 @@
 import MatchModel from '../database/models/MatchesModel';
 import TeamModel from '../database/models/TeamsModel';
+import createMatch from '../interfaces/CreateMatchInterface';
 
 export default class MatchService {
   static async getAll() {
@@ -15,7 +16,7 @@ export default class MatchService {
     return { status: 200, payload: response };
   }
 
-  static async getByQuery(inProgress: string | unknown) {
+  static async getByQuery(inProgress: string) {
     let boolean = null;
     if (inProgress === 'false') boolean = false;
     if (inProgress === 'true') boolean = true;
@@ -30,5 +31,15 @@ export default class MatchService {
     });
 
     return { status: 200, payload: response };
+  }
+
+  static async create(newMatch: createMatch) {
+    const { homeTeam, awayTeam, homeTeamGoals, awayTeamGoals } = newMatch;
+
+    const response = await MatchModel.create({ homeTeam, awayTeam, homeTeamGoals, awayTeamGoals });
+
+    console.log(response);
+
+    return { status: 201, payload: response };
   }
 }
