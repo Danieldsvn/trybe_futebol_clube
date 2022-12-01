@@ -1,15 +1,9 @@
 import { compareSync } from 'bcryptjs';
 import { sign, SignOptions } from 'jsonwebtoken';
 import UserModel from '../database/models/UsersModel';
+import Login from '../interfaces/LoginInterface';
 
 export const secret = 'jwt_secret';
-
-export interface Login {
-  message?: string;
-  status: number;
-  token?: string;
-  role?: string;
-}
 
 const INCORRECT_EMAIL_OR_PASSWORD = 'Incorrect email or password';
 
