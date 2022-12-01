@@ -27,19 +27,16 @@ export default class MatchController {
     try {
       const { homeTeam, awayTeam, homeTeamGoals, awayTeamGoals } = req.body;
 
-      const newMatch: createMatch = {
-        homeTeam,
-        awayTeam,
-        homeTeamGoals,
-        awayTeamGoals,
-      };
+      if (homeTeam === awayTeam) {
+        return res.status(422)
+          .json({ message: 'It is not possible to create a match with two equal teams' });
+      }
+
+      const newMatch: createMatch = { homeTeam, awayTeam, homeTeamGoals, awayTeamGoals };
 
       const response = await MatchService.create(newMatch);
 
-      const { status, payload, message } = response;
-
-      if (message) res.status(status).json({ message });
-
+      const { status, payload } = response;
       return res.status(status).json(payload);
     } catch (err) {
       console.error(err);
