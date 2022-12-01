@@ -7,7 +7,7 @@ export default class MatchController {
     try {
       const { inProgress } = req.query;
       if (inProgress) {
-        const response = await MatchService.getByQuery(inProgress as any);
+        const response = await MatchService.getByQuery(inProgress as string);
         const { status, payload } = response;
         return res.status(status).json(payload);
       }

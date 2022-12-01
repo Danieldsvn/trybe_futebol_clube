@@ -15,7 +15,7 @@ export default class MatchService {
     return { status: 200, payload: response };
   }
 
-  static async getByQuery(inProgress: string) {
+  static async getByQuery(inProgress: string | unknown) {
     let boolean = null;
     if (inProgress === 'false') boolean = false;
     if (inProgress === 'true') boolean = true;
