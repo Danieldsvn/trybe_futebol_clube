@@ -2,6 +2,7 @@ import * as express from 'express';
 import UserController from './controllers/UserController';
 import TeamController from './controllers/TeamController';
 import MatchController from './controllers/MatchController';
+import TokenValidation from './middlewares/TokenValidation';
 
 class App {
   public app: express.Express;
@@ -19,7 +20,7 @@ class App {
     this.app.get('/teams', (req, res) => TeamController.getAll(req, res));
     this.app.get('/teams/:id', (req, res) => TeamController.getById(req, res));
     this.app.get('/matches', (req, res) => MatchController.getAll(req, res));
-    this.app.post('/matches', (req, res) => MatchController.create(req, res));
+    this.app.post('/matches', TokenValidation, (req, res) => MatchController.create(req, res));
     this.app.patch('/matches/:id/finish', (req, res) => MatchController.finishMatch(req, res));
   }
 
