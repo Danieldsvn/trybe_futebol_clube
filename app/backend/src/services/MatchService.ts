@@ -56,4 +56,19 @@ export default class MatchService {
 
     return { status: 200, message: 'Scoreboard changed successfully' };
   }
+
+  static async getAllFinishedMatches() {
+    const response = await MatchModel.findAll({
+      include: [{
+        model: TeamModel, as: 'teamHome', attributes: { exclude: ['id'] },
+      }, {
+        model: TeamModel, as: 'teamAway', attributes: { exclude: ['id'] },
+      },
+      ],
+      where: { inProgress: false },
+    });
+
+    // console.log(response['0'].dataValues);
+    return response['0'].dataValues;
+  }
 }

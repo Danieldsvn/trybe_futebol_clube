@@ -3,6 +3,7 @@ import Validations from '../validations/Validations';
 
 import createMatch from '../interfaces/CreateMatchInterface';
 import MatchService from '../services/MatchService';
+// import Matches from 'src/database/models/MatchesModel';
 
 export default class MatchController {
   static async getAll(req: Request, res: Response) {
@@ -70,6 +71,17 @@ export default class MatchController {
       return res.status(status).json({ message });
     } catch (err) {
       return res.status(500).json({ message: 'erro' });
+    }
+  }
+
+  static async classificationHome(req: Request, res: Response) {
+    try {
+      const response = await MatchService.getAllFinishedMatches();
+      // array do time de id 1
+      // const team1Matches = response.filter((match) => match.homeTeam === 1);
+      return res.status(200).json(response);
+    } catch (err) {
+      console.error(err);
     }
   }
 }

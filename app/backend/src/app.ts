@@ -23,6 +23,7 @@ class App {
     this.app.post('/matches', TokenValidation, (req, res) => MatchController.create(req, res));
     this.app.patch('/matches/:id', (req, res) => MatchController.editMatch(req, res));
     this.app.patch('/matches/:id/finish', (req, res) => MatchController.finishMatch(req, res));
+    this.app.get('/leaderboard/home', (req, res) => MatchController.classificationHome(req, res));
   }
 
   private config():void {
