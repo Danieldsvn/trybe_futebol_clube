@@ -58,4 +58,18 @@ export default class MatchController {
       return res.status(500).json({ message: 'erro' });
     }
   }
+
+  static async editMatch(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const { homeTeamGoals, awayTeamGoals } = req.body;
+
+      const response = await MatchService.editMatch(+id, +homeTeamGoals, +awayTeamGoals);
+      const { status, message } = response;
+
+      return res.status(status).json({ message });
+    } catch (err) {
+      return res.status(500).json({ message: 'erro' });
+    }
+  }
 }

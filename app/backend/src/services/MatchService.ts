@@ -42,12 +42,18 @@ export default class MatchService {
   }
 
   static async finishMatch(id: number) {
-    const response = await MatchModel.update({ inProgress: false }, {
+    await MatchModel.update({ inProgress: false }, {
       where: { id },
     });
 
-    console.log(response);
-
     return { status: 200, message: 'Finished' };
+  }
+
+  static async editMatch(id: number, homeTeamGoals: number, awayTeamGoals: number) {
+    await MatchModel.update({ homeTeamGoals, awayTeamGoals }, {
+      where: { id },
+    });
+
+    return { status: 200, message: 'Scoreboard changed successfully' };
   }
 }
