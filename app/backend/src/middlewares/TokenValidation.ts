@@ -5,12 +5,11 @@ import { secret } from '../services/UserService';
 export default async function TokenValidation(req: Request, res: Response, next: NextFunction) {
   try {
     const tokenUser = req.headers.authorization;
-
-    verify(tokenUser as string, secret as string, (err, _decoded) => {
-      if (err) {
-        return res.status(401).json({ message: 'Token must be a valid token' });
-      }
-    });
+    try {
+      verify(tokenUser as string, secret as string);
+    } catch (error) {
+      return res.status(401).json({ message: 'Token must be a valid token' });
+    }
 
     next();
   } catch (err) {
