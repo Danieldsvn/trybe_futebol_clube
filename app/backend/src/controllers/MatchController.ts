@@ -28,12 +28,10 @@ export default class MatchController {
     try {
       const { homeTeam, awayTeam, homeTeamGoals, awayTeamGoals } = req.body;
 
-      const equalTeams = Validations.equalTeams(homeTeam, awayTeam);
-      if (equalTeams) return res.status(equalTeams.status).json({ message: equalTeams.message });
-      const home = await Validations.existTeam(homeTeam);
-      if (home) return res.status(home.status).json({ message: home.message });
-      const away = await Validations.existTeam(awayTeam);
-      if (away) return res.status(away.status).json({ message: away.message });
+      const validation = await Validations.matchCreate(homeTeam, awayTeam);
+      if (validation) {
+        return res.status(validation.status).json({ message: validation.message });
+      }
 
       const newMatch: createMatch = { homeTeam, awayTeam, homeTeamGoals, awayTeamGoals };
 

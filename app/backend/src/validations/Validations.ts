@@ -15,4 +15,14 @@ export default class Validations {
     }
     return false;
   }
+
+  static async matchCreate(homeTeam: number, awayTeam: number) {
+    const equalTeams = this.equalTeams(homeTeam, awayTeam);
+    if (equalTeams) return { status: equalTeams.status, message: equalTeams.message };
+    const home = await this.existTeam(homeTeam);
+    if (home) return { status: home.status, message: home.message };
+    const away = await this.existTeam(awayTeam);
+    if (away) return { status: away.status, message: away.message };
+    return false;
+  }
 }
