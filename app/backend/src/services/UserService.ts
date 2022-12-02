@@ -1,9 +1,13 @@
 import { compareSync } from 'bcryptjs';
+
 import { sign, SignOptions } from 'jsonwebtoken';
+import * as dotenv from 'dotenv';
 import UserModel from '../database/models/UsersModel';
 import Login from '../interfaces/LoginInterface';
 
-export const secret = 'jwt_secret';
+dotenv.config();
+
+export const secret = process.env.JWT_SECRET;
 
 const INCORRECT_EMAIL_OR_PASSWORD = 'Incorrect email or password';
 
@@ -25,7 +29,7 @@ export default class UserService {
       return passwordValidation;
     }
     const jwtConfig: SignOptions = { expiresIn: '8h', algorithm: 'HS256' };
-    const token = sign({ data: email }, secret, jwtConfig);
+    const token = sign({ data: email }, secret as string, jwtConfig);
 
     return { status: 200, token };
   }

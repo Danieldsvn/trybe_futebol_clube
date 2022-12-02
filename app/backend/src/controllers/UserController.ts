@@ -25,7 +25,7 @@ export default class UserController {
     try {
       const tokenUser = req.headers.authorization;
 
-      const decoded = verify(tokenUser as Token, secret) as JwtPayload;
+      const decoded = verify(tokenUser as Token, secret as string) as JwtPayload;
 
       const response = await UserService.loginValidation(decoded.data);
       const { status, message, role } = response;
