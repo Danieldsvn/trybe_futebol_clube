@@ -77,9 +77,10 @@ export default class MatchController {
   static async classificationHome(req: Request, res: Response) {
     try {
       const response = await MatchService.getAllFinishedMatches();
+      console.log(response);
       // array do time de id 1
       // const team1Matches = response.filter((match) => match.homeTeam === 1);
-      return res.status(200).json(response);
+      return res.status(200).send(response);
     } catch (err) {
       console.error(err);
     }

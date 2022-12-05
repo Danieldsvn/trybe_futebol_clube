@@ -68,7 +68,7 @@ export default class MatchService {
       where: { inProgress: false },
     });
 
-    // console.log(response['0'].dataValues);
+    console.log(response['0'].dataValues);
     return response['0'].dataValues;
   }
 }
