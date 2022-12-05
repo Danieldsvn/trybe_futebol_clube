@@ -69,6 +69,6 @@ export default class MatchService {
     });
 
     console.log(response['0'].dataValues);
-    return response['0'].dataValues;
+    return response;
   }
 }

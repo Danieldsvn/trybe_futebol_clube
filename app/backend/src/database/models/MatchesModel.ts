@@ -5,10 +5,11 @@ import Teams from './TeamsModel';
 class Matches extends Model {
   // declare <campo>: <tipo>;
   declare id: number;
-  declare username: string;
-  declare role: string;
-  declare email: string;
-  declare password: string;
+  declare homeTeam: number;
+  declare homeTeamGoals: number;
+  declare awayTeam: number;
+  declare awayTeamGoals: number;
+  declare inProgress: boolean;
 }
 
 Matches.init({
