@@ -50,11 +50,11 @@ for (let index = 0; index <= homeTeamsUnique.length - 1; index += 1) {
 
   const teamObj = {
     name,
+    totalPoints,
     totalGames,
     victories,
     draws,
     losses,
-    totalPoints,
     goalsFavor,
     goalsOwn,
     goalsBalance,
@@ -64,7 +64,65 @@ for (let index = 0; index <= homeTeamsUnique.length - 1; index += 1) {
   allTeamsObj.push(teamObj);
 }
 
-console.log('AllTeamsObj');
-console.log(allTeamsObj);
+// console.log('AllTeamsObj');
+// console.log(allTeamsObj);
 
-// Ordenando allTeamsObj
+// Ordenando allTeamsObj por pontos
+
+const allTeamsObjOrdered = allTeamsObj.sort((a, b) => {
+  if (a.totalPoints > b.totalPoints) return -1;
+  if (a.totalPoints < b.totalPoints) return 1;
+  return 0;
+});
+
+// Ordenando por total de vitorias
+
+const allTeamsObjOrderedVictories = allTeamsObjOrdered.sort((a, b) => {
+  if (a.totalPoints === b.totalPoints) {
+    if (a.victories > b.victories) return -1;
+    if (a.victories < b.victories) return 1;
+    return 0;
+  }
+});
+
+// console.log('AllTeamsObjOrderedVictories');
+// console.log(allTeamsObjOrderedVictories);
+
+// Ordenando por Saldo de gols
+
+const allTeamsObjOrderedVictoriesAndGolsBalance = allTeamsObjOrderedVictories.sort((a, b) => {
+  if (a.totalPoints === b.totalPoints) {
+    if ((a.victories === b.victories) && (a.goalsBalance > b.goalsBalance)) return -1;
+    if ((a.victories === b.victories) && (a.goalsBalance < b.goalsBalance)) return 1;
+  }
+  return 0;
+});
+
+// console.log('allTeamsObjOrderedVictoriesAndGolsBalance');
+// console.log(allTeamsObjOrderedVictoriesAndGolsBalance);
+
+// Ordenando por gols a favor
+
+const allTeamsObjVictorieGolsBalanceFavor = allTeamsObjOrderedVictoriesAndGolsBalance.sort((a, b) => {
+  if ((a.totalPoints === b.totalPoints) && (a.victories === b.victories)) {
+    if ((a.goalsBalance === b.goalsBalance) && (a.goalsFavor > b.goalsFavor)) return -1;
+    if ((a.goalsBalance === b.goalsBalance) && (a.goalsFavor < b.goalsFavor)) return 1;
+  }
+  return 0;
+});
+
+// console.log('allTeamsObjVictorieGolsBalanceFavor');
+// console.log(allTeamsObjVictorieGolsBalanceFavor);
+
+// Ordenando por gols contra
+
+const allTeamsObjVictorieGolsBalanceFavorOwn = allTeamsObjVictorieGolsBalanceFavor.sort((a, b) => {
+  if ((a.totalPoints === b.totalPoints) && (a.victories === b.victories) && (a.goalsBalance === b.goalsBalance)) {
+    if ((a.goalsFavor === b.goalsFavor) && (a.goalsOwn < b.goalsOwn)) return -1;
+    if ((a.goalsFavor === b.goalsFavor) && (a.goalsOwn > b.goalsOwn)) return 1;
+  }
+  return 0;
+});
+
+console.log('allTeamsObjVictorieGolsBalanceFavorOwn');
+console.log(allTeamsObjVictorieGolsBalanceFavorOwn);
