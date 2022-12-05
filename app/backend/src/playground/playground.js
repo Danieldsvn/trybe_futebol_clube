@@ -1,4 +1,4 @@
-const matchesMock = require('./route_get_matches_mock.json');
+import matchesMock from './route_get_matches_mock.json';
 
 // console.log(matchesMock);
 
