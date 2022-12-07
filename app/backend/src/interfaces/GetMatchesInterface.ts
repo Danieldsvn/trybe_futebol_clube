@@ -6,7 +6,7 @@ type teamAway = {
   teamName: string
 };
 
-export default interface leaderboardTeam {
+export default interface GetMatches {
   id: number;
   homeTeam: number;
   homeTeamGoals: number;
