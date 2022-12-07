@@ -64,19 +64,6 @@ function createTeamObject(team) {
   };
 }
 
-// Cria o Leaderboard sem ordenação
-function homeTeamGenerator(matches) {
-  const allTeamsObj = [];
-  const homeTeamIds = homeTeamIdGenerator(matches);
-
-  for (let index = 0; index <= homeTeamIds.length - 1; index += 1) {
-    const team = matches.filter((match) => match.homeTeam === homeTeamIds[index]);
-    const teamObject = createTeamObject(team);
-    allTeamsObj.push(teamObject);
-  }
-  return allTeamsObj;
-}
-
 // Ordena Leaderboard pela pontuação
 
 function orderByPoints(teams) {
@@ -154,12 +141,17 @@ function orderLeaderboard(teams) {
   return orderedGoalsOwn;
 }
 
-function leaderboardGenerator() {
-  const leaderboard = homeTeamGenerator(matchesMock);
+function leaderboardGenerator(matches) {
+  const leaderboard = [];
+  const homeTeamIds = homeTeamIdGenerator(matches);
+
+  for (let index = 0; index <= homeTeamIds.length - 1; index += 1) {
+    const team = matches.filter((match) => match.homeTeam === homeTeamIds[index]);
+    const teamObject = createTeamObject(team);
+    leaderboard.push(teamObject);
+  }
 
   const orderedLeaderboard = orderLeaderboard(leaderboard);
-
   return orderedLeaderboard;
 }
-
-console.log(leaderboardGenerator());
+console.log(leaderboardGenerator(matchesMock));
