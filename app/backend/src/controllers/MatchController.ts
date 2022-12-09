@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
-import leaderboardGenerator from '../helpers/leaderboardHomeGenerator';
+import { leaderboardHomeGenerator,
+  leaderboardAwayGenerator } from '../helpers/leaderboardGenerator';
 import Validations from '../validations/Validations';
 
 import createMatch from '../interfaces/CreateMatchInterface';
@@ -77,7 +78,17 @@ export default class MatchController {
   static async classificationHome(req: Request, res: Response) {
     try {
       const response = await MatchService.getAllFinishedMatches();
-      const leaderboard = leaderboardGenerator(response);
+      const leaderboard = leaderboardHomeGenerator(response);
+      return res.status(200).send(leaderboard);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  static async classificationAway(req: Request, res: Response) {
+    try {
+      const response = await MatchService.getAllFinishedMatches();
+      const leaderboard = leaderboardAwayGenerator(response);
       return res.status(200).send(leaderboard);
     } catch (err) {
       console.error(err);

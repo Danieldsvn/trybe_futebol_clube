@@ -8,13 +8,20 @@ function homeTeamIdGenerator(matches: GetMatches[]) {
   return homeTeamsUnique;
 }
 
+// Gera array Ids dos times da visitantes
+function awayTeamIdGenerator(matches: GetMatches[]) {
+  const awayTeams = matches.map((team_) => team_.awayTeam);
+  const awayTeamsUnique = [...new Set(awayTeams)];
+  return awayTeamsUnique;
+}
+
 // Calcula pontuação total
 function totalScore(victories_: number, draws_: number) {
   return (3 * victories_) + draws_;
 }
 
-// Gera vitórias, empates, derrotas e pontuação total
-function victoryDrawsLosses(matches: GetMatches[]) {
+// Gera vitórias, empates, derrotas e pontuação total Home
+function victoryDrawsLossesHome(matches: GetMatches[]) {
   let totalVictories = 0;
   let totalDraws = 0;
   let totalLosses = 0;
@@ -30,8 +37,25 @@ function victoryDrawsLosses(matches: GetMatches[]) {
   return { totalVictories, totalDraws, totalLosses, totalPoints };
 }
 
-// Gera gols a favor, contra e saldo de gols
-function goalsBalanceFunction(matches: GetMatches[]) {
+// Gera vitórias, empates, derrotas e pontuação total Away
+function victoryDrawsLossesAway(matches: GetMatches[]) {
+  let totalVictories = 0;
+  let totalDraws = 0;
+  let totalLosses = 0;
+
+  matches.forEach((match) => {
+    if (match.homeTeamGoals < match.awayTeamGoals) totalVictories += 1;
+    if (match.homeTeamGoals === match.awayTeamGoals) totalDraws += 1;
+    if (match.homeTeamGoals > match.awayTeamGoals) totalLosses += 1;
+  });
+
+  const totalPoints = totalScore(totalVictories, totalDraws);
+
+  return { totalVictories, totalDraws, totalLosses, totalPoints };
+}
+
+// Gera gols a favor, contra e saldo de gols Home
+function goalsBalanceHomeFunction(matches: GetMatches[]) {
   let goalsFavor = 0;
   let goalsOwn = 0;
 
@@ -44,12 +68,47 @@ function goalsBalanceFunction(matches: GetMatches[]) {
   return { goalsFavor, goalsOwn, goalsBalance };
 }
 
-// Cria uma unidade do Leaderboard
-function createTeamObject(team: GetMatches[]) {
+// Gera gols a favor, contra e saldo de gols Away
+function goalsBalanceAwayFunction(matches: GetMatches[]) {
+  let goalsFavor = 0;
+  let goalsOwn = 0;
+
+  matches.forEach((match) => {
+    goalsFavor += match.awayTeamGoals;
+    goalsOwn += match.homeTeamGoals;
+  });
+  const goalsBalance = goalsFavor - goalsOwn;
+
+  return { goalsFavor, goalsOwn, goalsBalance };
+}
+
+// Cria uma unidade de Home Leaderboard
+function createHomeTeamObject(team: GetMatches[]) {
   const name = team[0].teamHome.teamName;
   const totalGames = team.length;
-  const { totalVictories, totalDraws, totalLosses, totalPoints } = victoryDrawsLosses(team);
-  const { goalsFavor, goalsOwn, goalsBalance } = goalsBalanceFunction(team);
+  const { totalVictories, totalDraws, totalLosses, totalPoints } = victoryDrawsLossesHome(team);
+  const { goalsFavor, goalsOwn, goalsBalance } = goalsBalanceHomeFunction(team);
+  const efficiency = Number(((totalPoints / (totalGames * 3)) * 100).toFixed(2));
+  return {
+    name,
+    totalPoints,
+    totalGames,
+    totalVictories,
+    totalDraws,
+    totalLosses,
+    goalsFavor,
+    goalsOwn,
+    goalsBalance,
+    efficiency,
+  };
+}
+
+// Cria uma unidade de Away Leaderboard
+function createAwayTeamObject(team: GetMatches[]) {
+  const name = team[0].teamAway.teamName;
+  const totalGames = team.length;
+  const { totalVictories, totalDraws, totalLosses, totalPoints } = victoryDrawsLossesAway(team);
+  const { goalsFavor, goalsOwn, goalsBalance } = goalsBalanceAwayFunction(team);
   const efficiency = Number(((totalPoints / (totalGames * 3)) * 100).toFixed(2));
   return {
     name,
@@ -142,13 +201,27 @@ function orderLeaderboard(teams: Leaderboard[]) {
   return orderedGoalsOwn;
 }
 
-export default function leaderboardGenerator(matches: GetMatches[]) {
+export function leaderboardHomeGenerator(matches: GetMatches[]) {
   const leaderboard = [];
   const homeTeamIds = homeTeamIdGenerator(matches);
 
   for (let index = 0; index <= homeTeamIds.length - 1; index += 1) {
     const team = matches.filter((match) => match.homeTeam === homeTeamIds[index]);
-    const teamObject = createTeamObject(team);
+    const teamObject = createHomeTeamObject(team);
+    leaderboard.push(teamObject);
+  }
+
+  const orderedLeaderboard = orderLeaderboard(leaderboard);
+  return orderedLeaderboard;
+}
+
+export function leaderboardAwayGenerator(matches: GetMatches[]) {
+  const leaderboard = [];
+  const awayTeamIds = awayTeamIdGenerator(matches);
+
+  for (let index = 0; index <= awayTeamIds.length - 1; index += 1) {
+    const team = matches.filter((match) => match.awayTeam === awayTeamIds[index]);
+    const teamObject = createAwayTeamObject(team);
     leaderboard.push(teamObject);
   }
 
