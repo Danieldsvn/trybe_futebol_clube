@@ -1,3 +1,4 @@
+import GetMatches from '../interfaces/GetMatchesInterface';
 import MatchModel from '../database/models/MatchesModel';
 import TeamModel from '../database/models/TeamsModel';
 import createMatch from '../interfaces/CreateMatchInterface';
@@ -57,7 +58,7 @@ export default class MatchService {
     return { status: 200, message: 'Scoreboard changed successfully' };
   }
 
-  static async getAllFinishedMatches() {
+  static async getAllFinishedMatches(): Promise<GetMatches[]> {
     const response = await MatchModel.findAll({
       include: [{
         model: TeamModel, as: 'teamHome', attributes: { exclude: ['id'] },
@@ -68,7 +69,6 @@ export default class MatchService {
       where: { inProgress: false },
     });
 
-    console.log(response['0'].dataValues);
-    return response;
+    return response as [];
   }
 }
