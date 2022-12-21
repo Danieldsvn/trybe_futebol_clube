@@ -3,7 +3,13 @@
 
 ## O que é
 
-O Trybe Futebol Clube é um site informativo sobre partidas e classificações de futebol. O Front-End já foi provido. A API contruída possibilita o Front-End renderizar tabelas de partidas e da classificação geral dos times.
+O Trybe Futebol Clube é um site informativo sobre partidas e classificações de futebol. O Front-End já foi provido. A API contruída possibilita o Front-End renderizar  partidas a classificação dos times. Nesta aplicação, o usuário pode:
+
+1. Filtrar partidas por todas, em andamento e finalizadas.
+2. Filtrar a classificação por (Geral*, mandantes e visitantes)
+
+*__O back-end de "Classificação geral" não está implementado.__
+
 
 ## Tecnologias empregadas:
 
@@ -46,7 +52,8 @@ Os arquivos dos diretórios:
 * `./app/backend/src/validations`
 * `./app/backend/src/app.ts`
 
-## Como visualizar:
+## Como visualizar com Docker:
 
-Para executar o projeto faça o clone do repositório, entre na pasta do projeto e na raiz do projeto execute o comando `npm install` no terminal. 
-Depois vá para o diretório `./app/frontend` e execute o comando `npm start` no terminal para visualizar a aplicação no navegador Chrome!
+Para executar o projeto faça o clone do repositório, entre na pasta do projeto e na raiz do projeto execute o comando `npm run compose:up` no terminal. 
+Depois, abra seu navegador Chrome e acesse o endereço http://localhost:3000/
+
