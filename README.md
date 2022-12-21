@@ -49,4 +49,4 @@ Os arquivos dos diretórios:
 ## Como visualizar:
 
 Para executar o projeto faça o clone do repositório, entre na pasta do projeto e na raiz do projeto execute o comando `npm install` no terminal. 
-Depois vá para o diretório `src/app/frontend` e execute o comando `npm start` no terminal para visualizar a aplicação no navegador Chrome!
+Depois vá para o diretório `./app/frontend` e execute o comando `npm start` no terminal para visualizar a aplicação no navegador Chrome!
