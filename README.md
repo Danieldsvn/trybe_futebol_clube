@@ -13,7 +13,7 @@ O Trybe Futebol Clube é um site informativo sobre partidas e classificações d
 
 ## Tecnologias empregadas:
 
-Docker, TypeScript, Node.js, Docker e bibliotecas:
+Docker, TypeScript, Node.js e bibliotecas:
 * Sequelize (ORM)
 * Express(endpoints)
 * Sinon(testes)
