@@ -1,5 +1,5 @@
 # Trybe Futebol Clube
-28º projeto na Trybe. API RESTful em Node.js com arquitetura MSC(model-service-controller) em POO com testes de integração.
+27º projeto na Trybe. API RESTful em Node.js com arquitetura MSC(model-service-controller) em POO com testes de integração.
 
 ## O que é
 
